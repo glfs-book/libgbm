@@ -1,0 +1,6 @@
+build/
+*.swp
+*.old
+*.o
+*.os
+*.so
