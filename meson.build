@@ -12,14 +12,6 @@ project(
   'b_ndebug=if-release'],
 )
 cc = meson.get_compiler('c')
-pre_args = [
-  '-D__STDC_CONSTANT_MACROS',
-  '-D__STDC_FORMAT_MACROS',
-  '-D__STDC_LIMIT_MACROS',
-  '-DPACKAGE_VERSION="@0@"'.format(meson.project_version()),
-  '-DPACKAGE_BUGREPORT="https://github.com/glfs-book/libgbm/issues"',
-]
-c_args = []
 
 inc_gbm = include_directories('src')
 
@@ -48,9 +40,6 @@ dep_dl = null_dep
 if host_machine.system() != 'windows'
   if not cc.has_function('dlopen')
     dep_dl = cc.find_library('dl', required : true)
-  endif
-  if cc.has_function('dladdr', dependencies : dep_dl)
-    pre_args += '-DHAVE_DLADDR'
   endif
 endif 
 if dep_dl.found()
