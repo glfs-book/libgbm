@@ -57,6 +57,18 @@ libgbm = shared_library(
   install : true,
 )
 
+if get_option('tests')
+  abi_check = executable('gbm_abi_check', 'src/gbm_abi_check.c')
+  symbol_check = find_program(meson.current_source_dir() / 'src/symbols-check.py')
+  test('gbm-abi-check', abi_check, suite : ['gbm'])
+  test('check-symbols', symbol_check,
+    args :
+      ['--nm', 'nm',
+       '--symbols-file', meson.current_source_dir() / 'src/gbm-symbols.txt',
+       '--lib', libgbm.full_path()],
+    suite : ['gbm'])
+endif
+
 install_headers('src/gbm.h', 'src/gbm_backend_abi.h')
 
 pkg = import('pkgconfig')

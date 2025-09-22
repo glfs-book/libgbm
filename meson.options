@@ -5,3 +5,9 @@ option(
   description : 'Locations to search for gbm backends, passed as colon ' +
                 'separated list. Default: $libdir/gbm.'
 )
+option(
+  'tests',
+  type : 'boolean',
+  value : false,
+  description : 'Enable building unit tests.'
+)
