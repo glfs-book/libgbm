@@ -1,6 +1,3 @@
-# Copyright © 2017 Intel Corporation
-# SPDX-License-Identifier: MIT
-
 project(
   'libgbm',
   'c',
