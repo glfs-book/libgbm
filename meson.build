@@ -1,7 +1,7 @@
 project(
   'libgbm',
   'c',
-  version : '1.0.0',
+  version : files('VERSION'),
   license : 'MIT',
   meson_version : '>= 1.4.0',
   default_options : [
@@ -53,7 +53,7 @@ libgbm = shared_library(
   link_args : [ld_args_gc_sections],
   dependencies : [dep_libdrm],
   gnu_symbol_visibility : 'hidden',
-  version : '1.0.0',
+  version : meson.project_version(),
   install : true,
 )
 
