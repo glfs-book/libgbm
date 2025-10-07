@@ -71,12 +71,13 @@ endif
 
 install_headers('src/gbm.h', 'src/gbm_backend_abi.h')
 
+mesa_track = '25.2'
 pkg = import('pkgconfig')
 pkg.generate(
   name : 'gbm',
   filebase : 'gbm',
   description : 'GBM library',
-  version : meson.project_version(),
+  version : mesa_track,
   libraries : libgbm,
   libraries_private : gbm_priv_libs,
   variables : ['gbmbackendspath=' + gbm_backends_path],
