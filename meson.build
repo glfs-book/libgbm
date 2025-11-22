@@ -71,7 +71,7 @@ endif
 
 install_headers('src/gbm.h', 'src/gbm_backend_abi.h')
 
-mesa_track = '25.2'
+mesa_track = '25.3'
 pkg = import('pkgconfig')
 pkg.generate(
   name : 'gbm',
