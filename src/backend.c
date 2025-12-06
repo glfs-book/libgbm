@@ -81,7 +81,7 @@ const char *next, *end;
 void *driver = NULL;
 const char *dl_error = NULL;
 static struct gbm_device *
-load_backend_by_name(const char *name, int fd, bool warn_on_fail)
+load_backend_by_name(const char *name, int fd)
 {
    void *lib;
    end = DEFAULT_BACKENDS_PATH + strlen(DEFAULT_BACKENDS_PATH);
@@ -146,18 +146,26 @@ _gbm_create_device(int fd)
 
    const char *b = getenv("GBM_BACKEND");
    if (b) {
-      dev = load_backend_by_name(b, fd, true);
+      dev = load_backend_by_name(b, fd);
       if (dev) return dev;
    }
 
    drmVersionPtr v = drmGetVersion(fd);
    if (v) {
-      dev = load_backend_by_name(v->name, fd, true);
+      dev = load_backend_by_name(v->name, fd);
       drmFreeVersion(v);
       if (dev) return dev;
    }
 
-   return load_backend_by_name("dri", fd, true);
+   dev = load_backend_by_name("dri", fd);
+   if (dev) return dev;
+   printf("%s\n%s\n%s\n%s\n%s\n",
+"GBM Loader: All backends have failed to load.",
+"            The proper backend for your driver may not be in place, or loading",
+"            the correct one failed. Ensure your driver has modesetting on.",
+"            Loading the dri GBM backend was a last resort and it may not mean",
+"            it's the sole reason for a backend not being available for use.");
+   return NULL;
 }
 
 void
