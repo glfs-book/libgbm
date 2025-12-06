@@ -152,7 +152,7 @@ _gbm_create_device(int fd)
 
    drmVersionPtr v = drmGetVersion(fd);
    if (v) {
-      dev = load_backend_by_name(v->name, fd, false);
+      dev = load_backend_by_name(v->name, fd, true);
       drmFreeVersion(v);
       if (dev) return dev;
    }
