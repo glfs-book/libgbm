@@ -159,6 +159,10 @@ _gbm_create_device(int fd)
 
    dev = load_backend_by_name("dri", fd);
    if (dev) return dev;
+
+   dev = load_backend_by_name("dumb", fd);
+   if (dev) return dev;
+
    printf("%s\n%s\n%s\n%s\n%s\n",
 "GBM Loader: All backends have failed to load.",
 "            The proper backend for your driver may not be in place, or loading",
