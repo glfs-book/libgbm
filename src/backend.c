@@ -167,8 +167,8 @@ _gbm_create_device(int fd)
 "GBM Loader: All backends have failed to load.",
 "            The proper backend for your driver may not be in place, or loading",
 "            the correct one failed. Ensure your driver has modesetting on.",
-"            Loading the dri GBM backend was a last resort and it may not mean",
-"            it's the sole reason for a backend not being available for use.");
+"            The dri and dumb GBM backends were a last resort and it may not",
+"            mean it's the sole reason for a backend not being available.");
    return NULL;
 }
 
