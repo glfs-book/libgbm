@@ -5,17 +5,16 @@ will be `dri_gbm`, and in the case of the NVIDIA driver, it will be
 `nvidia-drm_gbm`, a symlink pointing to `libnvidia-allocator`.
 
 # The purpose of this variation
-It's a part of the Mesa project. However, the `meson.build` file
-for the project is really complicated and requires several options just to
-build the GBM frontend. Beyond that, it requires building a good lot of files
-before getting to the ones that really matter.
+libgbm is a part of the Mesa project. However, the `meson.build` file
+for the project requires many options, dependencies, and targets to build just
+the GBM frontend.
 
-For something so simple and that other vendors will expect to be present, it
-makes sense to have it in its own simple stand-alone package.
+Other vendors will expect libgbm to be present, and often don't require
+anything from Mesa but libgbm, it makes sense for libgbm to be isolated.
 
-This project was forked/ported from Mesa
-(https://gitlab.freedesktop.org/mesa/mesa/-/tree/main/src/gbm) and adapted to
-have less dependencies as well as be more simple and direct for what's needed.
+This project was extracted from Mesa
+(https://gitlab.freedesktop.org/mesa/mesa/-/tree/main/src/gbm) and adapted for
+for simplicity. It is ABI compatible with Mesa's libgbm.
 
 # Support
 Android is not supported. However, other operating systems making use of GBM
