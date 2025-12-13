@@ -14,7 +14,7 @@ anything from Mesa but libgbm, it makes sense for libgbm to be isolated.
 
 This project was extracted from Mesa
 (https://gitlab.freedesktop.org/mesa/mesa/-/tree/main/src/gbm) and adapted for
-for simplicity. It is ABI compatible with Mesa's libgbm.
+simplicity. It is ABI compatible with Mesa's libgbm.
 
 # Support
 Android is not supported. However, other operating systems making use of GBM
