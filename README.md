@@ -35,9 +35,9 @@ A stub can be created for `$LIBDIR/pkgconfig/dri.pc`, which is what
 as well as [Gaming Linux From
 Scratch](https://glfs-book.github.io/glfs/shareddeps/nvidia.html).
 
-For the header files, only Mesa supplies them. libglvnd nor this project
-provide them. The good news is that they can simply be copied from the Mesa
-tarball or downloaded from the FreeDesktop repository.
+For the header files, only Mesa supplies them. Neither libglvnd nor this
+project provide them. The good news is that they can simply be copied from the
+Mesa tarball or downloaded from the FreeDesktop repository.
 
 For the Mesa tarball, you can do something like this while in the root of the
 extracted tarball directory (`mesa-<major>.<minor>.<patch>/.`), as the
