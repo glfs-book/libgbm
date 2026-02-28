@@ -3,12 +3,15 @@ project(
   'c',
   version : files('VERSION'),
   license : 'MIT',
-  meson_version : '>= 1.4.0',
+  meson_version : '>= 1.6.0',
   default_options : [
   'buildtype=debugoptimized',
   'b_ndebug=if-release'],
 )
 cc = meson.get_compiler('c')
+
+mesa_track = '26.0'
+_drm_ver = '2.4.109'
 
 inc_gbm = include_directories('src')
 
@@ -42,7 +45,7 @@ endif
 if dep_dl.found()
   gbm_priv_libs += '-ldl'
 endif
-_drm_ver = '2.4.109'
+
 dep_libdrm = dependency('libdrm', version : '>=' + _drm_ver)
 ld_args_gc_sections = []
 libgbm = shared_library(
@@ -60,10 +63,11 @@ libgbm = shared_library(
 if get_option('tests')
   abi_check = executable('gbm_abi_check', 'src/gbm_abi_check.c')
   symbol_check = find_program(meson.current_source_dir() / 'src/symbols-check.py')
+  nm = find_program('nm')
   test('gbm-abi-check', abi_check, suite : ['gbm'])
   test('check-symbols', symbol_check,
     args :
-      ['--nm', 'nm',
+      ['--nm', nm,
        '--symbols-file', meson.current_source_dir() / 'src/gbm-symbols.txt',
        '--lib', libgbm.full_path()],
     suite : ['gbm'])
@@ -71,7 +75,6 @@ endif
 
 install_headers('src/gbm.h', 'src/gbm_backend_abi.h')
 
-mesa_track = '25.3'
 pkg = import('pkgconfig')
 pkg.generate(
   name : 'gbm',
