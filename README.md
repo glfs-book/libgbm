@@ -33,7 +33,7 @@ moment:
 A stub can be created for `$LIBDIR/pkgconfig/dri.pc`, which is what
 [NixOS does](https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/dr/dri-pkgconfig-stub/package.nix),
 as well as [Gaming Linux From
-Scratch](https://glfs-book.github.io/glfs/shareddeps/nvidia.html).
+Scratch](https://glfs-book.github.io/glfs/shareddeps/dri.html).
 
 For the header files, only Mesa supplies them. Neither libglvnd nor this
 project provide them. The good news is that they can simply be copied from the
