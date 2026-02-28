@@ -3,7 +3,7 @@ project(
   'c',
   version : files('VERSION'),
   license : 'MIT',
-  meson_version : '>= 1.6.0',
+  meson_version : '>= 1.4.0',
   default_options : [
   'buildtype=debugoptimized',
   'b_ndebug=if-release'],
@@ -63,14 +63,16 @@ libgbm = shared_library(
 if get_option('tests')
   abi_check = executable('gbm_abi_check', 'src/gbm_abi_check.c')
   symbol_check = find_program(meson.current_source_dir() / 'src/symbols-check.py')
-  nm = find_program('nm')
   test('gbm-abi-check', abi_check, suite : ['gbm'])
-  test('check-symbols', symbol_check,
-    args :
-      ['--nm', nm,
-       '--symbols-file', meson.current_source_dir() / 'src/gbm-symbols.txt',
-       '--lib', libgbm.full_path()],
-    suite : ['gbm'])
+  nm = find_program('nm', required : false)
+  if nm.found()
+    test('check-symbols', symbol_check,
+      args :
+        ['--nm', nm.full_path(),
+         '--symbols-file', meson.current_source_dir() / 'src/gbm-symbols.txt',
+         '--lib', libgbm.full_path()],
+      suite : ['gbm'])
+  endif
 endif
 
 install_headers('src/gbm.h', 'src/gbm_backend_abi.h')
