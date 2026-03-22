@@ -445,6 +445,9 @@ gbm_bo_destroy(struct gbm_bo *bo)
 /**
  * Allocate a buffer object for the given dimensions
  *
+ * Buffer allocation is asynchronous. The caller must use implicit sync to
+ * determine when the returned buffer is ready to be used.
+ *
  * \param gbm The gbm device returned from gbm_create_device()
  * \param width The width for the buffer
  * \param height The height for the buffer
