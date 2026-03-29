@@ -1,7 +1,7 @@
 # libgbm
 The Generic Buffer Management Library
 
-# Using at Runtime
+# Usage
 Applications that use libgbm or those that utilize a library or two that use
 **libgbm** can have some environment variables passed that determine how libgbm
 behaves. The following describes those variables and their functions.
