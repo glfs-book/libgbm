@@ -1,0 +1,75 @@
+.\" https://github.com/glfs-book/libgbm
+.Dd March 29, 2026
+.Dt libgbm 3
+.Os
+.Sh NAME
+.Nm libgbm
+.Nd The Generic Buffer Management library
+.Sh LIBRARY
+libgbm (-lgbm)
+.Sh SYNOPSIS
+.In gbm.h
+.Sh DESCRIPTION
+.Nm
+is a library for loading and utilizing Generic Buffer Management backends or
+drivers for use with graphics APIs such as EGL and GLES.
+.Pp
+.Nm
+is a part of the \fBMesa\fR project, but has been extracted from the main
+repository for a few reasons. No matter,
+.Nm
+is fully ABI and API compatible with the version of
+.Nm
+from \fBMesa\fR.
+.Sh USING AT RUNTIME
+Applications that use
+.Nm
+or those that utilize a library or two that use
+.Nm
+can have some environment variables passed that determine how
+.Nm
+behaves. The following describes those variables and their functions.
+.Bl -bullet
+.It
+\fBGBM_BACKENDS_PATH\fR: This \fBcomma\fR-delimited (arg1:arg2) variable
+specifies the paths which the GBM loader should look for GBM backends/drivers.
+.Pp
+At compilation time, a default path was given to the loader. If there wasn't
+an option passed to the build system for the default backend path, it should
+have been \fB$PREFIX/$LIBDIR/gbm\fR. \fBGBM_BACKENDS_PATH\fR will prefix to the
+overall search path before the default search path. In other words, the search
+path would look like \fBGBM_BACKENDS_PATH\fR:\fB$PREFIX/$LIBDIR/gbm\fR.
+.Pp
+An example on how to use the variable:
+.Pp
+\fBGBM_BACKENDS_PATH\fR=/usr/local/lib/gbm:/usr/lib/gbm2 eglinfo -B
+.It
+\fBGBM_BACKEND\fR: This variable specifies which backend to load, which is
+searched for in \fBGBM_BACKENDS_PATH\fR and in the default search path.
+.Pp
+Each backend/driver should have a suffix \fB(..._gbm.so)\fR.  For example, the
+most common backends look like \fBdri_gbm.so\fR and \fBnvidia-drm_gbm.so\fR.
+\fBGBM_BACKEND\fR specifies the \fBdri\fR or \fBnvidia-drm\fR bit. In addition
+to the variable, the loader looks for the name that's given by \fBlibdrm\fR of
+the automatically detected applicable card, given the DRM render node. This is
+often the name of the kernel video driver, like \fBi915\fR and
+\fBnvidia-drm\fR.
+.Pp
+If \fBGBM_BACKEND\fR is set to \fBnew\fR, then
+.Nm
+will try to load \fBnew_gbm.so\fR in the search path. It will try to load that
+first before trying to load the name that is given by \fBlibdrm\fR. If that
+fails, then some backend names are hardcoded in the loader to resort to:
+.Bl -bullet -compact
+.It
+dri
+.It
+dumb
+.El
+.Pp
+An example on how to use the variable:
+.Pp
+\fBGBM_BACKEND\fR=new eglinfo -B
+.El
+.Sh WRITING FOR LIBGBM
+This section will be written for soon.

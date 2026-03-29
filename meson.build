@@ -76,6 +76,13 @@ if get_option('tests')
 endif
 
 install_headers('src/gbm.h', 'src/gbm_backend_abi.h')
+install_man('doc/libgbm.3')
+install_data('doc/using.md',
+  install_dir : join_paths(get_option('prefix'),
+                get_option('datadir'))
+                + '/doc/libgbm-'
+                + meson.project_version()
+)
 
 pkg = import('pkgconfig')
 pkg.generate(
