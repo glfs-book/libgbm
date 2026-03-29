@@ -84,8 +84,19 @@ static struct gbm_device *
 load_backend_by_name(const char *name, int fd)
 {
    void *lib;
-   end = DEFAULT_BACKENDS_PATH + strlen(DEFAULT_BACKENDS_PATH);
-   for (const char *p = DEFAULT_BACKENDS_PATH; p < end; p = next + 1) {
+   char *search_path;
+   const char *gbp = getenv("GBM_BACKENDS_PATH");
+   if (gbp == NULL) {
+      search_path = DEFAULT_BACKENDS_PATH;
+   }
+   else {
+      size_t splen = strlen(gbp) + strlen(DEFAULT_BACKENDS_PATH) + 2;
+      search_path = malloc(splen);
+      snprintf(search_path, splen, "%s:%s",
+               gbp, DEFAULT_BACKENDS_PATH);
+   }
+   end = search_path + strlen(search_path);
+   for (const char *p = search_path; p < end; p = next + 1) {
       int len;
       next = strchr(p, ':');
       if (next == NULL)
@@ -94,16 +105,15 @@ load_backend_by_name(const char *name, int fd)
       snprintf(path, sizeof(path), "%.*s/%s%s.so", len,
                p, name, BACKEND_LIB_SUFFIX);
       lib = dlopen(path, RTLD_NOW | RTLD_LOCAL);
-      if (lib == NULL) {
+      if (lib == NULL)
          printf("GBM Loader: failed to open %s\n", path);
-      }
       /* not need continue to loop all paths once the driver is found */
       if (lib != NULL)
          break;
    }
    if (lib == NULL) {
          printf("GBM Loader: failed to open %s: (search path: %s, suffix %s)\n",
-              name, DEFAULT_BACKENDS_PATH, BACKEND_LIB_SUFFIX);
+              name, search_path, BACKEND_LIB_SUFFIX);
          return NULL;
    }
    printf("GBM Loader: dlopen(%s)\n", path);
