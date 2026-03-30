@@ -83,6 +83,7 @@ const char *dl_error = NULL;
 static struct gbm_device *
 load_backend_by_name(const char *name, int fd)
 {
+   const char *gbm_dbg = getenv("GBM_DEBUG");
    void *lib;
    char *search_path;
    const char *gbp = getenv("GBM_BACKENDS_PATH");
@@ -105,18 +106,22 @@ load_backend_by_name(const char *name, int fd)
       snprintf(path, sizeof(path), "%.*s/%s%s.so", len,
                p, name, BACKEND_LIB_SUFFIX);
       lib = dlopen(path, RTLD_NOW | RTLD_LOCAL);
-      if (lib == NULL)
-         printf("GBM Loader: failed to open %s\n", path);
+      if (lib == NULL) {
+         if (gbm_dbg && !strcmp(gbm_dbg, "1"))
+            printf("GBM Loader: failed to open %s\n", path);
+      }
       /* not need continue to loop all paths once the driver is found */
       if (lib != NULL)
          break;
    }
    if (lib == NULL) {
+      if (gbm_dbg && !strcmp(gbm_dbg, "1"))
          printf("GBM Loader: failed to open %s: (search path: %s, suffix %s)\n",
-              name, search_path, BACKEND_LIB_SUFFIX);
-         return NULL;
+                name, search_path, BACKEND_LIB_SUFFIX);
+      return NULL;
    }
-   printf("GBM Loader: dlopen(%s)\n", path);
+   if (gbm_dbg && !strcmp(gbm_dbg, "1"))
+      printf("GBM Loader: dlopen(%s)\n", path);
 
    if (!lib)
       return NULL;
@@ -173,12 +178,10 @@ _gbm_create_device(int fd)
    dev = load_backend_by_name("dumb", fd);
    if (dev) return dev;
 
-   printf("%s\n%s\n%s\n%s\n%s\n",
+   printf("%s\n%s\n%s\n",
 "GBM Loader: All backends have failed to load.",
 "            The proper backend for your driver may not be in place, or loading",
-"            the correct one failed. Ensure your driver has modesetting on.",
-"            The dri and dumb GBM backends were a last resort and it may not",
-"            mean it's the sole reason for a backend not being available.");
+"            the correct one failed. Ensure your driver has modesetting on.");
    return NULL;
 }
 

@@ -42,3 +42,12 @@ names are hardcoded in the loader to resort to:
 An example on how to use the variable:
 
 `GBM_BACKEND=new eglinfo -B`
+
+## `GBM_DEBUG`
+This variable allows you to see what libgbm is loading and where it’s looking.
+
+It must be set to `1` for the extra information to appear.
+
+An example on how to use the variable:
+
+`GBM_DEBUG=1 eglinfo ‐B`
