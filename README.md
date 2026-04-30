@@ -25,17 +25,22 @@ some files some packages expect that only come from Mesa:
   installed.
 - `$INCLUDEDIR/GL/internal/dri_interface.h`: A header file declaring the DRI
   interface, doesn't need a library.
-- `$INCLUDEDIR/EGL/eglmesaext.h`: Describes the EGL Mesa EXT interface.
-- `$INCLUDEDIR/EGL/eglext_angle.h`: The same as the previous one, but for
-  ANGLE.
+
+Sometimes, packages will also want the following:
+- `$INCLUDEDIR/EGL/eglmesaext.h`: Contains Mesa-specific EGL extensions that
+  have not yet been upstreamed.
+
+`$INCLUDEDIR/EGL/eglmesaext.h` is nowadays almost empty as most Mesa extensions
+got upstreamed by KhronosGroup. Please contact projects that include this file
+as it is most likely not needed anymore.
 
 A stub can be created for `$LIBDIR/pkgconfig/dri.pc`, which is what
 [NixOS does](https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/dr/dri-pkgconfig-stub/package.nix),
 as well as [Gaming Linux From
 Scratch](https://glfs-book.github.io/glfs/shareddeps/dri.html).
 
-For the header files, only Mesa supplies them. Neither libglvnd nor this
-project provide them. The good news is that they can simply be copied from the
+For the interface itself, only Mesa supplies it. Neither libglvnd nor this
+project provide it. The good news is that it can simply be copied from the
 Mesa tarball or downloaded from the FreeDesktop repository.
 
 For the Mesa tarball, you can do something like this while in the root of the
@@ -43,24 +48,15 @@ extracted tarball directory (`mesa-<major>.<minor>.<patch>/.`), as the
 ***root*** user:
 ```Bash
 install -vDm644 include/GL/internal/dri_interface.h \
-        -t      $INCLUDEDIR/GL/internal/           &&
-install -vDm644 include/EGL/eglmesaext.h            \
-        -t      $INCLUDEDIR/EGL/                   &&
-install -vDm644 include/EGL/eglext_angle.h          \
-        -t      $INCLUDEDIR/EGL/
+        -t      $INCLUDEDIR/GL/internal/
 ```
 
-For simply downloading the headers, you can use `wget` (or `curl`) instead, as
+For simply downloading the header, you can use `wget` (or `curl`) instead, as
 the ***root*** user:
 ```Bash
-install -vdm755 /usr/include/GL/internal \
-                /usr/include/EGL        &&
+install -vdm755 /usr/include/GL/internal &&
 wget https://gitlab.freedesktop.org/mesa/mesa/-/raw/<major>.<minor>/include/GL/internal/dri_interface.h \
-  -O /usr/include/GL/internal/dri_interface.h &&
-wget https://gitlab.freedesktop.org/mesa/mesa/-/raw/<major>.<minor>/include/EGL/eglmesaext.h \
-  -O /usr/include/EGL/eglmesaext.h &&
-wget https://gitlab.freedesktop.org/mesa/mesa/-/raw/<major>.<minor>/include/EGL/eglext_angle.h \
-  -O /usr/include/EGL/eglext_angle.h
+  -O /usr/include/GL/internal/dri_interface.h
 ```
 
 # Operating System Support
