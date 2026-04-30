@@ -9,8 +9,7 @@
 #include <xf86drm.h>
 #include "backend.h"
 
-#define ARRAY_SIZE(a) (sizeof(a)/sizeof((a)[0]))
-#define VER_MIN(a, b) ((a) < (b) ? (a) : (b))
+#define MIN2( A, B )   ( (A)<(B) ? (A) : (B) )
 
 /* For systems like Hurd */
 #ifndef PATH_MAX
@@ -61,8 +60,8 @@ create_backend_desc(const char *name,
 static struct gbm_device *
 backend_create_device(const struct gbm_backend_desc *bd, int fd)
 {
-   const uint32_t abi_ver = VER_MIN(GBM_BACKEND_ABI_VERSION,
-                                    bd->backend->v0.backend_version);
+   const uint32_t abi_ver = MIN2(GBM_BACKEND_ABI_VERSION,
+                                 bd->backend->v0.backend_version);
    struct gbm_device *dev = bd->backend->v0.create_device(fd, abi_ver);
 
    if (dev) {
