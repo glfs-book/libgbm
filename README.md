@@ -1,68 +1,46 @@
 # libgbm
-libgbm is the Generic Buffer Management library, a frontend to GBM which
-various vendors rely on to provide a GBM backend. In the case of Mesa, this
-will be `dri_gbm`, and in the case of the NVIDIA driver, it will be
-`nvidia-drm_gbm`, a symlink pointing to `libnvidia-allocator`.
+libgbm is the Generic Buffer Management loader, which various vendors rely on
+to provide a GBM backend.
 
-# The purpose of this variation
-libgbm is a part of the Mesa project. However, the `meson.build` file
-for the project requires many options, dependencies, and targets to build
-the GBM frontend.
+GBM is a specification that asynchronously allocate buffers and
+retrieves objects for some components like eglImage. Its main purpose is for
+use with OpenGL in some form, like OpenGL ES and EGL.
 
-Since other vendors will expect libgbm to be present, and often don't require
-anything from Mesa but libgbm, it makes sense for libgbm to be isolated.
+This is an up-to-date extraction of Mesa's libgbm.
 
-This project was extracted from
-[Mesa](https://gitlab.freedesktop.org/mesa/mesa/-/tree/main/src/gbm) and
-adapted for simplicity. It is ABI and API compatible with Mesa's libgbm.
+## Dependencies
+### Required
+- A C compiler (cc/gcc/clang/etc.)
+- pkg-config (or pkgconf)
+- Meson >= 1.4.0
+- Ninja (or samurai)
+- libdrm >= 2.4.109
+### Optional
+- Python >= 3.x (for tests)
+- nm (Binutils/LLVM; for tests)
 
-# What else is needed
-A package providing drivers for OpenGL, X.org, GBM, Vulkan, OpenCL, and other
-APIs should provide most of what you need on top of libgbm. However, there are
-some files some packages expect that only come from Mesa:
-
-- `$LIBDIR/pkgconfig/dri.pc`: A pkgconfig file saying the DRI interface is
-  installed.
-- `$INCLUDEDIR/GL/internal/dri_interface.h`: A header file declaring the DRI
-  interface, doesn't need a library.
-
-Sometimes, packages will also want the following:
-- `$INCLUDEDIR/EGL/eglmesaext.h`: Contains Mesa-specific EGL extensions that
-  have not yet been upstreamed.
-
-`$INCLUDEDIR/EGL/eglmesaext.h` is nowadays almost empty as most Mesa extensions
-got upstreamed by KhronosGroup. Please contact projects that include this file
-as it is most likely not needed anymore.
-
-A stub can be created for `$LIBDIR/pkgconfig/dri.pc`, which is what
-[NixOS does](https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/dr/dri-pkgconfig-stub/package.nix),
-as well as [Gaming Linux From
-Scratch](https://glfs-book.github.io/glfs/shareddeps/dri.html).
-
-For the interface itself, only Mesa supplies it. Neither libglvnd nor this
-project provide it. The good news is that it can simply be copied from the
-Mesa tarball or downloaded from the FreeDesktop repository.
-
-For the Mesa tarball, you can do something like this while in the root of the
-extracted tarball directory (`mesa-<major>.<minor>.<patch>/.`), as the
-***root*** user:
-```Bash
-install -vDm644 include/GL/internal/dri_interface.h \
-        -t      $INCLUDEDIR/GL/internal/
-```
-
-For simply downloading the header, you can use `wget` (or `curl`) instead, as
-the ***root*** user:
-```Bash
-install -vdm755 /usr/include/GL/internal &&
-wget https://gitlab.freedesktop.org/mesa/mesa/-/raw/<major>.<minor>/include/GL/internal/dri_interface.h \
-  -O /usr/include/GL/internal/dri_interface.h
-```
-
-# Operating System Support
+## Operating System Support
 Most systems making use of GBM are supported, except Android. Mesa supplies a
 special libgbm for Android that is not meant to conflict with the one that
 comes with each Android system. It's meant specifically for the Mesa drivers,
 while this one is more general purposed and less specialized. Please rely on
 Google's own offering. If you are installing Mesa for Android, use the libgbm
 that comes from Mesa.
+
+## Background
+libgbm was developed as a part of Mesa. As Mesa has a large set of technologies
+and existing ways of doing things, like functions, macros, and common headers,
+the technology of libgbm dependended upon a long stream of functions and
+references within a large utility library (`libmesa_util`), which has a lot of
+dependencies.
+
+This stream-like nature of libgbm was fixable but wouldn't make sense being
+upstreamed. There are multiple reasons, however, to go Mesa-less. NVIDIA
+systems, for example, have no use for Mesa if the proprietary userland video
+driver is being used. libgbm is one of the major components that is still
+needed, so making it Mesa-less by extracting it from its home serves this
+purpose.
+
+[This](https://gitlab.freedesktop.org/mesa/mesa/-/tree/main/src/gbm) is where
+Mesa's libgbm implementation currently lives. This extraction is fully
+ABI and API compliant.
