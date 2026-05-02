@@ -13,14 +13,11 @@ cc = meson.get_compiler('c')
 mesa_track = '26.0'
 _drm_ver = '2.4.109'
 
-inc_gbm = include_directories('src')
+inc_gbm = include_directories('include')
 
 files_gbm = files(
   'src/backend.c',
-  'src/backend.h',
   'src/gbm.c',
-  'src/gbm.h',
-  'src/gbmint.h',
 )
 
 gbm_backends_path = get_option('gbm-backends-path')
@@ -61,21 +58,21 @@ libgbm = shared_library(
 )
 
 if get_option('tests')
-  abi_check = executable('gbm_abi_check', 'src/gbm_abi_check.c')
-  symbol_check = find_program(meson.current_source_dir() / 'src/symbols-check.py')
+  abi_check = executable('gbm_abi_check', 'tests/gbm_abi_check.c')
+  symbol_check = find_program(meson.current_source_dir() / 'tests/symbols-check.py')
   test('gbm-abi-check', abi_check, suite : ['gbm'])
   nm = find_program('nm', required : false)
   if nm.found()
     test('check-symbols', symbol_check,
       args :
         ['--nm', nm.full_path(),
-         '--symbols-file', meson.current_source_dir() / 'src/gbm-symbols.txt',
+         '--symbols-file', meson.current_source_dir() / 'tests/gbm-symbols.txt',
          '--lib', libgbm.full_path()],
       suite : ['gbm'])
   endif
 endif
 
-install_headers('src/gbm.h', 'src/gbm_backend_abi.h')
+install_headers('include/gbm.h', 'include/gbm_backend_abi.h')
 install_man('doc/libgbm.3')
 install_data('doc/using.md',
   install_dir : join_paths(get_option('prefix'),
