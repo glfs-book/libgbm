@@ -1,10 +1,10 @@
 # libgbm
-libgbm is the Generic Buffer Management loader, which various vendors rely on
-to provide a GBM backend.
+libgbm is the Generic Buffer Management backend loader, which various packages
+and GBM vendors use.
 
-GBM is a specification that asynchronously allocate buffers and
-retrieves objects for some components like eglImage. Its main purpose is for
-use with OpenGL in some form, like OpenGL ES and EGL.
+GBM is asynchronously allocate buffers and retrieves objects for some
+components like eglImage. Its main purpose is for use with OpenGL in some form,
+like OpenGL ES and EGL. Each backend handles buffer allocation.
 
 This is an up-to-date extraction of Mesa's libgbm.
 
