@@ -2,7 +2,7 @@
 libgbm is the Generic Buffer Management backend loader, which various packages
 and GBM vendors use.
 
-GBM is asynchronously allocate buffers and retrieves objects for some
+GBM asynchronously allocates buffers and retrieves objects for some
 components like eglImage. Its main purpose is for use with OpenGL in some form,
 like OpenGL ES and EGL. Each backend handles buffer allocation.
 
