@@ -10,7 +10,7 @@ project(
 )
 cc = meson.get_compiler('c')
 
-mesa_track = '26.0'
+mesa_track = '26.1'
 _drm_ver = '2.4.109'
 
 inc_gbm = include_directories('include')
