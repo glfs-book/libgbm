@@ -2,11 +2,24 @@
 libgbm is the Generic Buffer Management backend loader, which various packages
 and GBM vendors use.
 
-GBM asynchronously allocates buffers and retrieves objects for some
-components like eglImage. Its main purpose is for use with OpenGL in some form,
-like OpenGL ES and EGL. Each backend handles buffer allocation.
+GBM asynchronously allocates buffers and retrieves those buffers for projects
+that need to access the Direct Rendering Manager. These allocations are often
+for getting a buffer for a display, in which the project can send or get things
+from it. This OS-portable (across UNIX operating systems) library loads
+backends/drivers that do most of the work, and from there may be OS-specific
+and may talk directly with the OS kernel. The main focus for GBM is said to be
+OpenGL ES and EGL, but can be used for Vulkan, which may be necessary to make
+the project portable, mainly for Wayland compositors. GBM is not tied to OpenGL
+ES or EGL, but the backends it loads may be.
 
 This is an up-to-date extraction of Mesa's libgbm.
+
+> [!NOTE]
+> This project does not install Mesa-specific interfaces or extensions, like
+> Xorg DRI or `eglmesaext.h`. Projects that require them probably don't need to
+> do so. `eglmesaext.h` used to have a lot more extenstions, but most of them
+> have been upstreamed into the EGL registry. The Xorg DRI interface is only
+> used by Xorg-Server, including the Xwayland branch.
 
 ## Dependencies
 ### Required
@@ -20,12 +33,13 @@ This is an up-to-date extraction of Mesa's libgbm.
 - nm (Binutils/LLVM; for tests)
 
 ## Operating System Support
-Most systems making use of GBM are supported, except Android. Mesa supplies a
-special libgbm for Android that is not meant to conflict with the one that
-comes with each Android system. It's meant specifically for the Mesa drivers,
-while this one is more general purposed and less specialized. Please rely on
-Google's own offering. If you are installing Mesa for Android, use the libgbm
-that comes from Mesa.
+UNIX operating systems that are supported by libdrm can use this library, but
+the backend libgbm loads must support the OS and DRM system. Android, using a
+Linux-based kernel, is not supported. Mesa supplies a special version of libgbm
+for Android, and Android provides libgbm as well. Mesa's libgbm is meant
+specifically for the Mesa drivers, while this one is more general purposed and
+less specialized. Please rely on Google's own offering unless you are
+installing Mesa on Android, in which case you should install libgbm from Mesa.
 
 ## Background
 libgbm was developed as a part of Mesa. As Mesa has a large set of technologies
