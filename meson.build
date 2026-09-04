@@ -29,6 +29,17 @@ args_gbm = [
   '-DDEFAULT_BACKENDS_PATH="@0@"'.format(gbm_backends_path),
 ]
 
+if (cc.has_header_symbol('sys/sysmacros.h', 'major') and
+  cc.has_header_symbol('sys/sysmacros.h', 'minor') and
+  cc.has_header_symbol('sys/sysmacros.h', 'makedev'))
+  args_gbm += '-DMAJOR_IN_SYSMACROS'
+endif
+if (cc.has_header_symbol('sys/mkdev.h', 'major') and
+  cc.has_header_symbol('sys/mkdev.h', 'minor') and
+  cc.has_header_symbol('sys/mkdev.h', 'makedev'))
+  args_gbm += '-DMAJOR_IN_MKDEV'
+endif
+
 libgbm_name = 'gbm'
 
 gbm_priv_libs = []
