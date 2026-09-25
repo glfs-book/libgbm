@@ -102,8 +102,3 @@ pkg.generate(
   libraries_private : gbm_priv_libs,
   variables : ['gbmbackendspath=' + gbm_backends_path],
 )
-
-dep_gbm = declare_dependency(
-  link_with : libgbm,
-  include_directories : inc_gbm,
-)
