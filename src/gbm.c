@@ -536,9 +536,22 @@ gbm_bo_create_with_modifiers2(struct gbm_device *gbm,
       return NULL;
    }
 
-   if (modifiers && (flags & GBM_BO_USE_LINEAR)) {
-      errno = EINVAL;
-      return NULL;
+   if (modifiers && (flags & (GBM_BO_USE_WRITE | GBM_BO_USE_LINEAR))) {
+      int found = 0;
+      for (unsigned i = 0; !found && (i < count); i++) {
+         switch (modifiers[i]) {
+         case 0: /* DRM_FORMAT_MOD_LINEAR */
+         case ((1ULL << 56) - 1): /* DRM_FORMAT_MOD_INVALID */
+            found = 1;
+         }
+      }
+      if (!found) {
+         errno = EINVAL;
+         return NULL;
+      }
+
+      /* Strip modifiers to make the backends happy */
+      return gbm->v0.bo_create(gbm, width, height, format, flags, NULL, 0);
    }
 
    return gbm->v0.bo_create(gbm, width, height, format, flags, modifiers, count);
@@ -575,6 +588,19 @@ GBM_EXPORT struct gbm_bo *
 gbm_bo_import(struct gbm_device *gbm,
               uint32_t type, void *buffer, uint32_t flags)
 {
+   if (type == GBM_BO_IMPORT_FD_MODIFIER &&
+       (flags & (GBM_BO_USE_WRITE | GBM_BO_USE_LINEAR))) {
+      struct gbm_import_fd_modifier_data *data = buffer;
+      switch (data->modifier) {
+      case 0: /* DRM_FORMAT_MOD_LINEAR */
+      case ((1ULL << 56) - 1): /* DRM_FORMAT_MOD_INVALID */
+         break;
+      default:
+         errno = EINVAL;
+         return NULL;
+      }
+   }
+
    return gbm->v0.bo_import(gbm, type, buffer, flags);
 }
 
