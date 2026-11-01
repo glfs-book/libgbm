@@ -180,22 +180,22 @@ gbm_bo_get_format(struct gbm_bo *bo)
    return bo->v0.format;
 }
 
-/** Get the bit-per-pixel of the buffer object's format
+/** Get the bit-per-pixel of the gbm format
  *
- * The bits-per-pixel of the buffer object's format.
+ * The bits-per-pixel of the gbm format.
  *
  * Note; The 'in-memory pixel' concept makes no sense for YUV formats
  * (pixels are the result of the combination of multiple memory sources:
  * Y, Cb & Cr; usually these are even in separate buffers), so YUV
  * formats are not supported by this function.
  *
- * \param bo The buffer object
- * \return The number of bits0per-pixel of the buffer object's format.
+ * \param format The gbm format
+ * \return The number of bits-per-pixel of the gbm format.
  */
 GBM_EXPORT uint32_t
-gbm_bo_get_bpp(struct gbm_bo *bo)
+gbm_format_get_bpp(uint32_t format)
 {
-   switch (bo->v0.format) {
+   switch (format) {
       default:
          return 0;
       case GBM_FORMAT_C8:
@@ -252,6 +252,25 @@ gbm_bo_get_bpp(struct gbm_bo *bo)
       case GBM_FORMAT_ABGR16161616F:
          return 64;
    }
+}
+
+/** Get the bit-per-pixel of the buffer object's format
+ *
+ * The bits-per-pixel of the buffer object's format.
+ *
+ * Note; The 'in-memory pixel' concept makes no sense for YUV formats
+ * (pixels are the result of the combination of multiple memory sources:
+ * Y, Cb & Cr; usually these are even in separate buffers), so YUV
+ * formats are not supported by this function.
+ *
+ * \param bo The buffer object
+ * \return The number of bits-per-pixel of the buffer object's format.
+ */
+
+GBM_EXPORT uint32_t
+gbm_bo_get_bpp(struct gbm_bo *bo)
+{
+   return gbm_format_get_bpp(bo->v0.format);
 }
 
 /** Get the offset for the data of the specified plane
