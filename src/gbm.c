@@ -180,22 +180,22 @@ gbm_bo_get_format(struct gbm_bo *bo)
    return bo->v0.format;
 }
 
-/** Get the bit-per-pixel of the buffer object's format
+/** Get the bit-per-pixel of the gbm format
  *
- * The bits-per-pixel of the buffer object's format.
+ * The bits-per-pixel of the gbm format.
  *
  * Note; The 'in-memory pixel' concept makes no sense for YUV formats
  * (pixels are the result of the combination of multiple memory sources:
  * Y, Cb & Cr; usually these are even in separate buffers), so YUV
  * formats are not supported by this function.
  *
- * \param bo The buffer object
- * \return The number of bits0per-pixel of the buffer object's format.
+ * \param format The gbm format
+ * \return The number of bits-per-pixel of the gbm format.
  */
 GBM_EXPORT uint32_t
-gbm_bo_get_bpp(struct gbm_bo *bo)
+gbm_format_get_bpp(uint32_t format)
 {
-   switch (bo->v0.format) {
+   switch (format) {
       default:
          return 0;
       case GBM_FORMAT_C8:
@@ -252,6 +252,25 @@ gbm_bo_get_bpp(struct gbm_bo *bo)
       case GBM_FORMAT_ABGR16161616F:
          return 64;
    }
+}
+
+/** Get the bit-per-pixel of the buffer object's format
+ *
+ * The bits-per-pixel of the buffer object's format.
+ *
+ * Note; The 'in-memory pixel' concept makes no sense for YUV formats
+ * (pixels are the result of the combination of multiple memory sources:
+ * Y, Cb & Cr; usually these are even in separate buffers), so YUV
+ * formats are not supported by this function.
+ *
+ * \param bo The buffer object
+ * \return The number of bits-per-pixel of the buffer object's format.
+ */
+
+GBM_EXPORT uint32_t
+gbm_bo_get_bpp(struct gbm_bo *bo)
+{
+   return gbm_format_get_bpp(bo->v0.format);
 }
 
 /** Get the offset for the data of the specified plane
@@ -517,9 +536,22 @@ gbm_bo_create_with_modifiers2(struct gbm_device *gbm,
       return NULL;
    }
 
-   if (modifiers && (flags & GBM_BO_USE_LINEAR)) {
-      errno = EINVAL;
-      return NULL;
+   if (modifiers && (flags & (GBM_BO_USE_WRITE | GBM_BO_USE_LINEAR))) {
+      int found = 0;
+      for (unsigned i = 0; !found && (i < count); i++) {
+         switch (modifiers[i]) {
+         case 0: /* DRM_FORMAT_MOD_LINEAR */
+         case ((1ULL << 56) - 1): /* DRM_FORMAT_MOD_INVALID */
+            found = 1;
+         }
+      }
+      if (!found) {
+         errno = EINVAL;
+         return NULL;
+      }
+
+      /* Strip modifiers to make the backends happy */
+      return gbm->v0.bo_create(gbm, width, height, format, flags, NULL, 0);
    }
 
    return gbm->v0.bo_create(gbm, width, height, format, flags, modifiers, count);
@@ -556,6 +588,19 @@ GBM_EXPORT struct gbm_bo *
 gbm_bo_import(struct gbm_device *gbm,
               uint32_t type, void *buffer, uint32_t flags)
 {
+   if (type == GBM_BO_IMPORT_FD_MODIFIER &&
+       (flags & (GBM_BO_USE_WRITE | GBM_BO_USE_LINEAR))) {
+      struct gbm_import_fd_modifier_data *data = buffer;
+      switch (data->modifier) {
+      case 0: /* DRM_FORMAT_MOD_LINEAR */
+      case ((1ULL << 56) - 1): /* DRM_FORMAT_MOD_INVALID */
+         break;
+      default:
+         errno = EINVAL;
+         return NULL;
+      }
+   }
+
    return gbm->v0.bo_import(gbm, type, buffer, flags);
 }
 

@@ -430,6 +430,9 @@ uint32_t
 gbm_bo_get_format(struct gbm_bo *bo);
 
 uint32_t
+gbm_format_get_bpp(uint32_t format);
+
+uint32_t
 gbm_bo_get_bpp(struct gbm_bo *bo);
 
 uint32_t
