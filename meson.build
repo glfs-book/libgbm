@@ -102,3 +102,11 @@ pkg.generate(
   libraries_private : gbm_priv_libs,
   variables : ['gbmbackendspath=' + gbm_backends_path],
 )
+pkg.generate(
+  name : 'libgbm',
+  filebase : 'libgbm',
+  description : 'GBM library',
+  libraries : libgbm,
+  libraries_private : gbm_priv_libs,
+  variables : ['gbmbackendspath=' + gbm_backends_path],
+)
