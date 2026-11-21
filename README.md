@@ -2,9 +2,9 @@
   <img src="images/libgbm.svg" type="image/svg+xml"/>
 </div>
 
-libgbm is the Generic Buffer Management backend loader, which various packages
-and GBM vendors use.
+The libgbm library provides the GBM API and loads vendor-provided GBM backends.
 
+## About libgbm
 GBM asynchronously allocates buffers and retrieves those buffers for projects
 that need to access the Direct Rendering Manager. These allocations are often
 for getting a buffer for a display, in which the project can send or get things
