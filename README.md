@@ -1,4 +1,7 @@
-# libgbm
+<div align="center">
+  <img src="images/libgbm.svg" type="image/svg+xml"/>
+</div>
+
 libgbm is the Generic Buffer Management backend loader, which various packages
 and GBM vendors use.
 
