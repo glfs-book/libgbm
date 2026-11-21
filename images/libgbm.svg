@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="131.11478mm"
+   height="51.627357mm"
+   viewBox="0 0 131.11478 51.627357"
+   version="1.1"
+   id="svg1"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="131.11478"
+       height="51.627357"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <rect
+       x="120"
+       y="515"
+       width="603"
+       height="201"
+       id="rect7" />
+    <rect
+       x="281.91721"
+       y="417.08301"
+       width="440.21555"
+       height="125.2597"
+       id="rect2" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-39.442607,-98.007971)">
+    <g
+       inkscape:groupmode="layer"
+       id="layer2"
+       inkscape:label="Layer 2">
+      <path
+         id="path8"
+         style="fill:#91ffc5;fill-opacity:1;stroke-width:0.343674"
+         d="m 69.953353,98.007971 a 51.13073,23.283333 0 0 0 -16.08429,16.953489 51.13073,23.283333 0 0 0 16.366443,17.07337 43.391666,28.641148 0 0 1 -8.62738,-17.13952 43.391666,28.641148 0 0 1 8.345227,-16.887339 z m 70.093397,0 a 43.391666,28.641148 0 0 1 8.34471,16.887339 43.391666,28.641148 0 0 1 -8.62686,17.13952 51.13073,23.283333 0 0 0 16.36592,-17.07337 51.13073,23.283333 0 0 0 -16.08377,-16.953489 z" />
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,-10.254268,-6.7329895)"
+       id="text2"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:75px;font-family:'Helvetica Neue';-inkscape-font-specification:'Helvetica Neue Bold';writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect2);fill:#91e483;fill-opacity:1;stroke-width:0.948661"><tspan
+         x="281.91797"
+         y="487.75209"
+         id="tspan3"><tspan
+           style="font-family:'Cascadia Mono';-inkscape-font-specification:'Cascadia Mono Bold';fill:#bababa"
+           id="tspan1">lib</tspan><tspan
+           style="fill:#91ffc5"
+           id="tspan2">GBM</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,-4.4974413,-6.8791668)"
+       id="text7"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:32px;font-family:'Cascadia Mono';-inkscape-font-specification:'Cascadia Mono Bold';text-align:center;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect7);fill:#91ffc5;fill-opacity:1;stroke-width:0.948661"
+       x="301.5"
+       y="0"><tspan
+         x="165.65668"
+         y="545.15256"
+         id="tspan5"><tspan
+           style="font-family:'Helvetica Neue';-inkscape-font-specification:'Helvetica Neue Bold'"
+           id="tspan4">The Generic Buffer Management
+</tspan></tspan><tspan
+         x="373.53204"
+         y="585.75888"
+         id="tspan7"><tspan
+           style="font-family:'Helvetica Neue';-inkscape-font-specification:'Helvetica Neue Bold'"
+           id="tspan6">library</tspan></tspan></text>
+  </g>
+</svg>
